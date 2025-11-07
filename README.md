@@ -84,7 +84,7 @@
 SELECT * FROM users 
 WHERE email = 'mikhail.guzhov@example.com' AND name = 'Mikhail';
 
-* **Проверка, что после PUT-запроса на /products/{id} остаток товара (stock_quantity) обновился в БД
+* Проверка, что после PUT-запроса на /products/{id} остаток товара (stock_quantity) обновился в БД
 SELECT stock_quantity 
 FROM products 
 WHERE product_id = '{{productId}}';
