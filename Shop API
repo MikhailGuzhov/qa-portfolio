@@ -1,0 +1,285 @@
+{
+	"info": {
+		"_postman_id": "b9c943a7-107b-4403-b05f-31e414100bdc",
+		"name": "Skillbox Shop API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "43833797",
+		"_collection_link": "https://mikhail-7759864.postman.co/workspace/Mikhail's-Workspace~011888ce-146c-4d6f-800b-be9aadbe4b90/collection/43833797-b9c943a7-107b-4403-b05f-31e414100bdc?action=share&source=collection_link&creator=43833797"
+	},
+	"item": [
+		{
+			"name": "GET all products",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iamfinallytester",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "skillboxadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET one products ID",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iamfinallytester",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "skillboxadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST ➜ Create product",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Сохраняем id созданного товара\r",
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"productId\", jsonData.id);\r",
+							"\r",
+							"// Базовые проверки\r",
+							"pm.test(\"Status 200/201\", () => pm.expect(pm.response.code).to.be.oneOf([200, 201]));\r",
+							"\r",
+							"\r",
+							"const data = pm.response.json();\r",
+							"pm.environment.set(\"productId\", data.id);   // кладём id в Environment skillbox shop\r",
+							"\r",
+							"pm.test(\"Статус ответа должен быть 400 или 422 (ошибка валидации)\", function () {\r",
+							"    pm.expect(pm.response.code).to.be.oneOf([400, 422]);\r",
+							"});\r",
+							"\r",
+							"const json = pm.response.json();\r",
+							"const failedFields = [];\r",
+							"\r",
+							"if (json) {\r",
+							"    if (json.price !== undefined || JSON.stringify(json).includes(\"price\")) {\r",
+							"        failedFields.push(\"price\");\r",
+							"    }\r",
+							"    if (json.regular_price !== undefined || JSON.stringify(json).includes(\"regular_price\")) {\r",
+							"        failedFields.push(\"regular_price\");\r",
+							"    }\r",
+							"    if (json.sale_price !== undefined || JSON.stringify(json).includes(\"sale_price\")) {\r",
+							"        failedFields.push(\"sale_price\");\r",
+							"    }\r",
+							"    if (json.stock_quantity !== undefined || JSON.stringify(json).includes(\"stock_quantity\")) {\r",
+							"        failedFields.push(\"stock_quantity\");\r",
+							"    }\r",
+							"\r",
+							"    pm.test(\"Проверка, что сервер отработал валидацию по полям\", function () {\r",
+							"        pm.expect(failedFields.length).to.be.above(0);\r",
+							"        console.log(\"Поля с ошибками:\", failedFields.join(\", \"));\r",
+							"    });\r",
+							"} else {\r",
+							"    pm.test(\"Ответ не является JSON\", function () {\r",
+							"        pm.expect(false).to.be.true;\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iamfinallytester",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "skillboxadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"New Black Men's Jeans\",\r\n    \"slug\": \"apple\",\r\n      \"manage_stock\": true,\r\n    \"stock_quantity\": 10,\r\n    \"description\": \"SuperMan\",\r\n     \r\n    \"sale_price\": 3000,\r\n      \"images\": [\r\n      {\r\n        \"src\": \"https://i.ebayimg.com/images/g/3XUAAOSwhuxatCCi/s-l1600.jpg\"\r\n      }\r\n    ],\r\n    \"categories\": [\r\n      {\r\n        \"id\": 555,\r\n        \"name\": \"Джинсы\",\r\n        \"slug\": \"jeans\"\r\n      }\r\n    ]\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET → Product by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status is 200\", () => pm.response.code === 200);\r",
+							"// Достаём JSON\r",
+							"const r = pm.response.json();\r",
+							"\r",
+							"// Проверяем ровно те поля, которые критичны бизнесу\r",
+							"pm.test(\"Slug не изменился\", () => pm.expect(r.slug).eql(\"qa-demo-mouse-2\"));\r",
+							"pm.test(\"Stock = 51\", ()  => pm.expect(r.stock_quantity).eql(51));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iamfinallytester",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "skillboxadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/products/{{productId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"{{productId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT ➜ Reduce stock",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const req = JSON.parse(pm.request.body.raw);\r",
+							"pm.variables.set('expectedQty', req.stock_quantity);\r",
+							"const res = pm.response.json();\r",
+							"const expected = Number(pm.variables.get('expectedQty'));\r",
+							"\r",
+							"pm.test(`Server должен вернуть ${expected}`, () => {\r",
+							"  pm.expect(res.stock_quantity, \r",
+							"            `Бэк вернул ${res.stock_quantity}, ожидалось ${expected}`)\r",
+							"    .eql(expected);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "iamfinallytester",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "skillboxadmin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"stock_quantity\": 10 }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/{{productId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"{{productId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
