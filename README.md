@@ -79,16 +79,17 @@
 
 ## 3. Базы данных (SQL):
 Для более глубокой проверки и валидации данных использую SQL. Я могу написать простые SELECT-запросы, чтобы убедиться, что бэкенд корректно обработал запрос и записал нужные данные в базу.
--- Проверка, что пользователь "Mikhail" действительно был создан в таблице 'users'
+
+* **Проверка, что пользователь "Mikhail" действительно был создан в таблице 'users'
 SELECT * FROM users 
 WHERE email = 'mikhail.guzhov@example.com' AND name = 'Mikhail';
 
--- Проверка, что после PUT-запроса на /products/{id} остаток товара (stock_quantity) обновился в БД
+* **Проверка, что после PUT-запроса на /products/{id} остаток товара (stock_quantity) обновился в БД
 SELECT stock_quantity 
 FROM products 
 WHERE product_id = '{{productId}}';
 
--- Проверка, что после создания заказа в API, он появился в таблице 'orders' со статусом 'processing'
+* **Проверка, что после создания заказа в API, он появился в таблице 'orders' со статусом 'processing'
 SELECT status 
 FROM orders 
 WHERE order_id = '100500' AND user_id = '123';
