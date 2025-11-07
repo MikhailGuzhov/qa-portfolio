@@ -75,7 +75,7 @@
 * **Использую переменные:** Применяю переменные окружения (Environment) для "прокидывания" данных между запросами (например, `productID` или `token`).
 
 **Пример коллекции:**
-* [**Shop API.postman_collection.json**](Shop API.postman_collection.json).
+* [**Shop API.postman_collection.json**](Shop_API.postman_collection.json)
 
 ## 3. Базы данных (SQL):
 Для более глубокой проверки и валидации данных использую SQL. Я могу написать простые SELECT-запросы, чтобы убедиться, что бэкенд корректно обработал запрос и записал нужные данные в базу.
@@ -93,3 +93,11 @@ WHERE product_id = '{{productId}}';
 SELECT status 
 FROM orders 
 WHERE order_id = '100500' AND user_id = '123';
+
+## 4. Автоматизация тестирования (AQA)
+Это мое основное направление для роста, куда я сейчас вкладываю все силы.
+* **Мой текущий стек в изучении::**
+* Язык: Python
+* Фреймворк: Pytest
+* Инструменты: Selenium (для Web), Appium (для Mobile)
+* Паттерн: Page Object Model (POM)
